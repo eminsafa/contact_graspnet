@@ -134,11 +134,20 @@ def read_file():
                 scores=scores,
                 contact_pts=contact_pts
             )
+            # np.savez(
+            #     'results/pc_{}'.format(
+            #         os.path.basename(p.replace('png', 'npz').replace('npy', 'npz'))
+            #     ),
+            #     pc_full=pc_full,
+            #     pc_colors=pc_colors,
+            # )
 
             # Visualize results
             # show_image(rgb, segmap)
             # visualize_grasps(pc_full, pred_grasps_cam, scores, plot_opencv_cam=True, pc_colors=pc_colors)
-            return os.path.join(os.getcwd(), saved_path)
+            result = os.path.join(os.getcwd(), saved_path)
+            print(result)
+            return result
         else:
             return f"File not found at path: {p}"
     else:

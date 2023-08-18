@@ -190,7 +190,7 @@ def get_model(point_cloud, is_training, global_config, bn_decay=None):
 
     return end_points
 
-def build_6d_grasp(approach_dirs, base_dirs, contact_pts, thickness, use_tf=False, gripper_depth = 0.1034):
+def build_6d_grasp(approach_dirs, base_dirs, contact_pts, thickness, use_tf=False, gripper_depth = 0.0):
     """
     Build 6-DoF grasps + width from point-wise network predictions
 
