@@ -93,7 +93,7 @@ def read_file():
             # show_image(rgb, segmap)
             # visualize_grasps(pc_full, pred_grasps_cam, scores, plot_opencv_cam=True, pc_colors=pc_colors)
 
-            result = os.path.join(os.getcwd(), save_path)
+            result = os.path.join(os.path.dirname(__file__), save_path)
             print(f"Result: {result}")
             return result
         else:
