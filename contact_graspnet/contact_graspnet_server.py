@@ -20,23 +20,16 @@ file = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'global_con
 global_config = json.loads(file.read())
 
 checkpoint_dir = 'checkpoints/scene_test_2048_bs3_hor_sigma_001'
-png_path = ''
-K = None
 z_range = [0.2, 1.1]
 local_regions = False
 filter_grasps = False
 skip_border_objects = False
 forward_passes = 5
-segmap_id = 0
-arg_configs = []
-
 app = Flask(__name__)
 
 # Build the model
 grasp_estimator = GraspEstimator(global_config)
 grasp_estimator.build_network()
-
-# Add ops to save and restore all the variables.
 saver = tf.train.Saver(save_relative_paths=True)
 
 # Create a session
@@ -57,7 +50,7 @@ def read_file():
             print('Loading ', path)
 
             pc_segments = {}
-            segmap, rgb, depth, cam_K, pc_full, pc_colors = load_available_input_data(path, K=K)
+            segmap, rgb, depth, cam_K, pc_full, pc_colors = load_available_input_data(path, K=None)
 
             if segmap is None and (local_regions or filter_grasps):
                 raise ValueError('Need segmentation map to extract local regions or filter grasps')
@@ -82,12 +75,15 @@ def read_file():
                 filter_grasps=filter_grasps,
                 forward_passes=forward_passes,
             )
-
-            saved_path = 'results/predictions_{}'.format(
+            file_name = 'predictions_{}'.format(
                 os.path.basename(path.replace('png', 'npz').replace('npy', 'npz'))
             )
+            save_path = os.path.abspath(
+                os.path.join(os.getcwd(), '..', '..', '..', 'assets', 'grasping_pose_results', file_name)
+            )
+
             np.savez(
-                saved_path,
+                save_path,
                 pred_grasps_cam=pred_grasps_cam,
                 scores=scores,
                 contact_pts=contact_pts,
@@ -97,7 +93,7 @@ def read_file():
             # show_image(rgb, segmap)
             # visualize_grasps(pc_full, pred_grasps_cam, scores, plot_opencv_cam=True, pc_colors=pc_colors)
 
-            result = os.path.join(os.getcwd(), saved_path)
+            result = os.path.join(os.getcwd(), save_path)
             print(f"Result: {result}")
             return result
         else:
