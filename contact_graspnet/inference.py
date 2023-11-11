@@ -143,14 +143,14 @@ def inference(
         )
 
         # Save results
-        # np.savez(
-        #     "/home/furkan/ros/noetic/repos/github.com/CardiffUniversityComputationalRobotics/cucr_robots_tests/tests_franka/test_franka_common_bringup/src/predictions_{}".format(
-        #         os.path.basename(p.replace("png", "npz").replace("npy", "npz"))
-        #     ),
-        #     pred_grasps_cam=pred_grasps_cam,
-        #     scores=scores,
-        #     contact_pts=contact_pts,
-        # )
+        np.savez(
+            "/home/juanhernandezvega/dev/AdaptiveGoalRegion/storage/grasping_poses/{}".format(
+                os.path.basename(p.replace("png", "npz").replace("npy", "npz"))
+            ),
+            pred_grasps_cam=pred_grasps_cam,
+            scores=scores,
+            contact_pts=contact_pts,
+        )
         # computer_name = get_computer_name()
         # csv_file_path = (
         #     "/home/"
@@ -181,9 +181,7 @@ def inference(
 
         # Visualize results
         # show_image(rgb, segmap)
-        visualize_grasps(
-            pc_full, pred_grasps_cam, scores, plot_opencv_cam=True, pc_colors=pc_colors
-        )
+        visualize_grasps(pc_full, pred_grasps_cam, scores, plot_opencv_cam=True, pc_colors=pc_colors)
         # input("============ Press `Enter` to grasp objects ...")
 
     if not glob.glob(input_paths):
@@ -197,9 +195,11 @@ if __name__ == "__main__":
         default="checkpoints/scene_test_2048_bs3_hor_sigma_001",
         help="Log dir [default: checkpoints/scene_test_2048_bs3_hor_sigma_0025]",
     )
+    directory_name = input("Enter data file directory name:")
+    data_file_path = f"/home/juanhernandezvega/dev/AdaptiveGoalRegion/storage/captures/{directory_name}/data.npy"
     parser.add_argument(
         "--np_path",
-        default="test_data/franka_gazebo_v2.npy",
+        default=data_file_path,
         help='Input data: npz/npy file with keys either "depth" & camera matrix "K" or just point cloud "pc" in meters. Optionally, a 2D "segmap"',
     )
     parser.add_argument(

@@ -102,7 +102,7 @@ def n_closest_points_indices(points, target_point, n=3):
 
 
 def save_interpolation_data(adaptive_goal_region_data: List, path: Optional[str] = None) -> None:
-    path = path if path is not None else "/home/juanhernandezvega/dev/RoboRL-Navigator/external/contact_graspnet/results/agr_output.txt"
+    path = path if path is not None else "/home/juanhernandezvega/dev/AdaptiveGoalRegion/storage/grasping_poses/agr_output.txt"
     with open(path, "w") as file:
         for goal_region in adaptive_goal_region_data:
             text = ""
