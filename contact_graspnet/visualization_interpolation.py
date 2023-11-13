@@ -199,6 +199,23 @@ def visualize_grasps(
                         gripper_openings=gripper_openings_k,
                     )
 
+    for i, k in enumerate(pred_grasps_cam):
+        if np.any(pred_grasps_cam[k]):
+            gripper_openings_k = (
+                np.ones(len(pred_grasps_cam[k])) * gripper_width
+                if gripper_openings is None
+                else gripper_openings[k]
+            )
+            print(len(pred_grasps_cam))
+            if len(pred_grasps_cam) >= 1:
+                print(f"\n{np.round(pred_grasps_cam[k][np.argmax(scores[k])], 6).tolist()}\n")
+                draw_grasps(
+                    [pred_grasps_cam[k][np.argmax(scores[k])]],
+                    np.eye(4),
+                    color=(0.0, 1.0, 0.0),
+                    gripper_openings=gripper_openings_k,
+                )
+
     # Draw Raw Grasping Poses (Default: False)
     scatter = False
     if scatter:
